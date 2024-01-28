@@ -5,27 +5,26 @@ ScanSuite is the self contained vulnerability scanning orchestrator for the code
 ### Install ScanSuite
 
 ```
-chmod +x install-ubuntu.sh
-./install-ubuntu.sh
-```
-
-After installation you will find ScanSuite password here:
-
-```
-cat /var/tmp/scansuite.log | grep password
-```
-
-And DefectDojo password is here:
-
-```
-sudo docker-compose -f ~/apps/django-DefectDojo/docker-compose.yml logs initializer | grep "Admin password:"
+./install-ubuntu dojo
 ```
 
 ### Set up connection with DefectDojo
 
+Fetch the password:
+
+```
+./dojo-password
+```
+
 Locate the api key by visiting https://your-defectdojo-host:8443/api/key-v2
 
-Set environment variables in `scansuite-demo/.env` file
+Copy the key and DefectDojo url to `scansuite/.env` file
+
+### Start the ScanSuite
+
+```
+./start-scansuite
+```
 
 ### (Optional) Set up connection with Snyk
 
@@ -34,16 +33,3 @@ Set environment variables in `scansuite-demo/.env` file
 * Then follow to `https://app.snyk.io/account/` and create the Auth Token
 
 Set the token value in `scansuite-demo/.env` file
-
-### Start the ScanSuite stack
-
-```
-cd scansuite-demo
-docker-compose up -d
-```
-
-Open the browser and login to the console with the user `admin`
-
-## Licence
-
-All parts of the ScanSuite framework, including the source code belong to the author (Sergey Egorov) and may only be used for product demonstration purposes.
