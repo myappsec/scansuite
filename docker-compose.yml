@@ -21,7 +21,7 @@ services:
     
   worker:
     image: cepxeo/worker:TAG
-    command: python worker.py
+    command: python work.py
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /var/tmp:/var/tmp
