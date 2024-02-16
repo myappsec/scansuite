@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   web:
-    image: cepxeo/web:TAG
+    image: appsec4u/web:TAG
     command: python app.py
     volumes:
       - /var/tmp:/var/tmp
@@ -20,7 +20,7 @@ services:
     #   - "6379:6379"
     
   worker:
-    image: cepxeo/worker:TAG
+    image: appsec4u/worker:TAG
     command: python work.py
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
