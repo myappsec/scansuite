@@ -32,6 +32,19 @@ services:
       - redis
       - postgres
 
+  worker_admin:
+    image: appsec4u/worker:TAG
+    command: python work_admin.py
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/tmp:/var/tmp
+      - ./key:/key
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - postgres
+
   postgres:
     image: postgres:13-alpine
     volumes:
