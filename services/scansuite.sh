@@ -6,12 +6,10 @@ if ! ls *.lic &> /dev/null; then
 fi
 
 for file in *.lic; do
-    # Extract the filename part between _ and .
     license=$(echo "$file" | sed 's/.*_\(.*\)\..*/\1/')
-    # Check if the filename contains - or _
     if [[ ${#license} -eq 6 ]]; then
         lic_path=$(realpath "$file")
-        mkdir -p ~/apps
+        mkdir ~/apps
         cd apps
         git clone https://github.com/myappsec/scansuite
         cd scansuite && cp $lic_path key/
@@ -20,6 +18,7 @@ for file in *.lic; do
             exit 1
         else
             rm $lic_path
+            cd app/scansuite && ./start-scansuite
             exit 0
         fi
 
