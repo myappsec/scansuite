@@ -11,9 +11,6 @@ for file in *.lic; do
     # Check if the filename contains - or _
     if [[ ${#license} -eq 6 ]]; then
         lic_path=$(realpath "$file")
-        echo $lic_path
-        echo $license
-
         mkdir -p ~/apps
         cd apps
         git clone https://github.com/myappsec/scansuite
