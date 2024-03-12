@@ -18,7 +18,9 @@ for file in *.lic; do
             exit 1
         else
             rm $lic_path
+            echo ""
             cd ~/apps/scansuite && ./start-scansuite
+            echo ""
             echo "ScanSuite was successfully installed to ~/apps/scansuite"
             exit 0
         fi
