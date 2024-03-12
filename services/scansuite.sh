@@ -1,7 +1,7 @@
 #! /bin/bash
 
 if ! ls *.lic &> /dev/null; then
-    echo "No licence files found in the current folder. Copy the file and try again."
+    echo "No license files found in the current folder. Copy the file and try again."
     exit 1
 fi
 
@@ -19,12 +19,12 @@ for file in *.lic; do
         else
             rm $lic_path
             cd ~/apps/scansuite && ./start-scansuite
-            echo "ScanSuite was installed to ~/apps/scansuite"
+            echo "ScanSuite was successfully installed to ~/apps/scansuite"
             exit 0
         fi
 
     else
-        echo "Invalid licence file name. Please check the file name and try again."
+        echo "Invalid license file name. Please check the file name and try again."
         exit 1
     fi
 done
