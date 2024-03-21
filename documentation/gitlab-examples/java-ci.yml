@@ -1,0 +1,78 @@
+image: appsec4u/worker:keyid
+
+variables:
+  ENG: 3
+  DOCKER_IMAGE: vulnerables/web-dvwa:latest
+
+stages:
+  - build
+  - test
+  - prelive
+  - prod
+  
+before_script:
+  - export DOJO_APIKEY=$DOJO_APIKEY
+  - export DOJO_HOST=$DOJO_HOST
+
+build:
+  stage: build
+  script:
+    - echo "Building"
+
+sast_semgrep:
+  stage: build
+  script:
+    scansuite semgrep_local $ENG
+  allow_failure: true
+
+sast_gitlab:
+  stage: build
+  script:
+    scansuite semgrep_gitlab $ENG
+  allow_failure: true
+
+sast_codeql:
+  stage: build
+  script:
+    scansuite codeql $ENG java
+  allow_failure: true
+
+sast_findsecbugs:
+  stage: build
+  script:
+    scansuite java $ENG
+  allow_failure: true
+
+secrets_gitleaks:
+  stage: build
+  script:
+    - scansuite gitleaks $ENG
+  allow_failure: true
+
+secrets_trufflehog:
+  stage: build
+  script:
+    - scansuite trufflehog $ENG
+  allow_failure: true
+
+iacs_kics:
+  stage: test
+  script:
+    - scansuite iacs_kics $ENG
+  allow_failure: true
+
+image_vulns_trivy:
+  stage: test
+  script:
+    - scansuite image_trivy $ENG $DOCKER_IMAGE
+  allow_failure: true
+
+prelife:
+  stage: prelive
+  script:
+    - id
+
+production:
+  stage: prod
+  script:
+    - id
