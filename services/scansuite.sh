@@ -21,7 +21,23 @@ for file in *.lic; do
             echo ""
             cd ~/apps/scansuite && ./start-scansuite
             echo ""
-            echo "ScanSuite was successfully installed to ~/apps/scansuite"
+            
+            if [ $? -ne 0 ]; then
+                echo "ScanSuite start failed."
+                echo "Try to ./start-scansuite from ~/apps/scansuite"
+                exit 1
+            fi
+
+            echo "ScanSuite started"
+            echo "To start or restart it manually run:"
+            echo "./start-scansuite from ~/apps/scansuite folder"
+            echo ""
+            echo "Get DefectDojo admin password and API key by running:"
+            echo "./dojo-password from ~/apps/scansuite"
+            echo ""
+            echo "To fetch updates run:"
+            echo "./install <your_key_id> from ~/apps/scansuite"
+            echo ""
             exit 0
         fi
 
