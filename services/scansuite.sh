@@ -29,8 +29,9 @@ for file in *.lic; do
             fi
 
             echo "ScanSuite started"
+            echo ""
             echo "To start or restart it manually run:"
-            echo "./start-scansuite from ~/apps/scansuite folder"
+            echo "./start-scansuite from ~/apps/scansuite"
             echo ""
             echo "Get DefectDojo admin password and API key by running:"
             echo "./dojo-password from ~/apps/scansuite"
