@@ -1,0 +1,81 @@
+image: 'appsec4u/worker:keyid'
+variables:
+  ENG: 9
+  DOCKER_IMAGE: 'nginx:latest'
+  WEBSITE: 'https://scansuite.ru'
+  COOKIES: none
+  LANG: java
+
+stages:
+  - build
+  - sast
+  - sca
+  - infra_test
+  - dynamic
+  - prod
+before_script:
+  - export DOJO_APIKEY=$DOJO_APIKEY
+  - export DOJO_HOST=$DOJO_HOST
+build:
+  stage: build
+  script:
+    - echo "Building"
+secrets_gitleaks:
+  stage: build
+  script:
+    - scansuite gitleaks $ENG
+  allow_failure: true
+secrets_trufflehog:
+  stage: build
+  script:
+    - scansuite trufflehog $ENG
+  allow_failure: true
+semgrep:
+  stage: sast
+  script:
+    - scansuite semgrep_local $ENG
+  allow_failure: true
+gitlab:
+  stage: sast
+  script:
+    - scansuite semgrep_gitlab $ENG
+  allow_failure: true
+codeql:
+  stage: sast
+  script:
+    - scansuite codeql $ENG $LANG
+  allow_failure: true
+findsecbugs:
+  stage: sast
+  script:
+    - scansuite $LANG $ENG
+  allow_failure: true
+trivy:
+  stage: sca
+  script:
+    - scansuite dep_trivy $ENG
+  allow_failure: true
+iacs_kics:
+  stage: infra_test
+  script:
+    - scansuite iacs_kics $ENG
+  allow_failure: true
+image_vulns_trivy:
+  stage: infra_test
+  script:
+    - scansuite image_trivy $ENG $DOCKER_IMAGE
+  allow_failure: true
+zap:
+  stage: dynamic
+  script:
+    - scansuite zap_base $ENG $WEBSITE $COOKIES
+  allow_failure: true
+nuclei:
+  stage: dynamic
+  script:
+    - scansuite nuclei_local $ENG $WEBSITE $COOKIES
+  allow_failure: true
+production:
+  stage: prod
+  script:
+    - id
