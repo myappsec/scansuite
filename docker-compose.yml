@@ -16,6 +16,8 @@ services:
   redis:
     image: redis:6-alpine
     command: ["redis-server", "--requirepass", "${REDIS_PASSWORD}"]
+    environment:
+      TZ: "Europe/Berlin"
     # ports:
     #   - "6379:6379"
     
@@ -50,6 +52,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
+      TZ: "Europe/Berlin"
       POSTGRES_DB: ${PS_DATABASE_NAME}
       POSTGRES_USER: ${PS_DATABASE_USER}
       POSTGRES_PASSWORD: ${PS_DATABASE_PASSWORD}
@@ -61,6 +64,8 @@ services:
     volumes:
      - ./services/nginx:/etc/nginx/templates
      - ./services/nginx/certs:/etc/nginx/certs
+    environment:
+      TZ: "Europe/Berlin"
     ports:
      - "443:443"
      - "80:80"
