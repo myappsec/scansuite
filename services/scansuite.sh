@@ -20,24 +20,31 @@ for file in *.lic; do
             rm $lic_path
             echo ""
             cd ~/apps/scansuite && ./start-scansuite
-            echo ""
             
             if [ $? -ne 0 ]; then
+                echo ""
+                echo "ScanSuite start failed. Fixing possible issues."
+                ~/apps/scansuite/services/reset-scansuite
+                cd ~/apps/scansuite && ./start-scansuite
+            fi
+
+            if [ $? -ne 0 ]; then
+                echo ""
                 echo "ScanSuite start failed."
-                echo "Try to ./start-scansuite from ~/apps/scansuite"
+                echo "Try running cd ~/apps/scansuite && ./start-scansuite"
                 exit 1
             fi
 
             echo "ScanSuite started"
             echo ""
             echo "To start or restart it manually run:"
-            echo "./start-scansuite from ~/apps/scansuite"
+            echo "cd ~/apps/scansuite && ./start-scansuite"
             echo ""
             echo "Get DefectDojo admin password and API key by running:"
-            echo "./dojo-password from ~/apps/scansuite"
+            echo "~/apps/scansuite/dojo-password"
             echo ""
             echo "To fetch updates run:"
-            echo "./install <your_key_id> from ~/apps/scansuite"
+            echo "cd ~/apps/scansuite && ./install <your_key_id>"
             echo ""
             exit 0
         fi
