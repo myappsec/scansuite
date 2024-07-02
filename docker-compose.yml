@@ -47,6 +47,17 @@ services:
       - redis
       - postgres
 
+  celery_beat:
+    image: appsec4u/worker:TAG
+    command: /app/run_beat.sh
+    volumes:
+      - ./key:/key
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - postgres
+
   postgres:
     image: postgres:13-alpine
     volumes:
