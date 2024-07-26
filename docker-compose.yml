@@ -22,7 +22,7 @@ services:
     #   - "6379:6379"
     
   worker:
-    image: appsec4u/worker
+    image: appsec4u/worker:TAG
     command: python work.py
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -35,7 +35,7 @@ services:
       - postgres
 
   worker_admin:
-    image: appsec4u/worker
+    image: appsec4u/worker:TAG
     command: python work_admin.py
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -48,7 +48,7 @@ services:
       - postgres
 
   celery_beat:
-    image: appsec4u/worker
+    image: appsec4u/worker:TAG
     command: /app/run_beat.sh
     volumes:
       - ./key:/key
