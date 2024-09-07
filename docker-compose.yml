@@ -47,7 +47,7 @@ services:
 
   celery_beat:
     image: appsec4u/worker:TAG
-    command: /app/run_beat.sh
+    command: /app/run_beat
     volumes:
       - ./key:/key
     env_file:
