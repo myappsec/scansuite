@@ -1,4 +1,4 @@
 #!/bin/bash
 
 cd /USER/apps/scansuite && ./start-scansuite
-cd /USER/apps/django-DefectDojo && ./dc-up-d.sh postgres-redis
+cd /USER/apps/django-DefectDojo && sudo docker compose up -d
