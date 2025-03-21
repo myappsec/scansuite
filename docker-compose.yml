@@ -85,7 +85,7 @@ services:
     #   - "5432:5432"
 
   seaweedfs:
-    image: chrislusf/seaweedfs
+    image: appsec4u/seaweedfs
     command: ["server", "-s3", "-dir=/tmp", "-volume.fileSizeLimitMB 5000", "-volume.minFreeSpace 5GiB"]
     volumes:
       - seaweedfs_data:/tmp
