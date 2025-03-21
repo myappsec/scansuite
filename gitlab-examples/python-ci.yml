@@ -1,0 +1,87 @@
+image: 'appsec4u/worker:keyid'
+variables:
+  ENG: 10
+  DOCKER_IMAGE: 'codeclimate/codeclimate-coffeelint'
+  WEBSITE: 'https://ginandjuice.shop'
+  COOKIES: none
+  LANG: python
+
+stages:
+  - build
+  - sast
+  - sca
+  - infra_test
+  - dynamic
+  - prod
+before_script:
+  - export DOJO_APIKEY=$DOJO_APIKEY
+  - export DOJO_HOST=$DOJO_HOST
+build:
+  stage: build
+  image: python:3.6
+  before_script:
+   - pip3 install --upgrade virtualenv
+  script:
+   - virtualenv env                       # Create a virtual environment for the python application
+   - source env/bin/activate              # Activate the virtual environment
+   - pip install -r requirements.txt      # Install the required third party packages as defined in requirements.txt
+   - python manage.py check               # Run checks to ensure the application is working fine
+secrets_gitleaks:
+  stage: build
+  script:
+    - scansuite gitleaks $ENG
+  allow_failure: true
+secrets_trufflehog:
+  stage: build
+  script:
+    - scansuite trufflehog $ENG
+  allow_failure: true
+semgrep:
+  stage: sast
+  script:
+    - scansuite semgrep_local $ENG
+  allow_failure: true
+gitlab:
+  stage: sast
+  script:
+    - scansuite semgrep_gitlab $ENG
+  allow_failure: true
+codeql:
+  stage: sast
+  script:
+    - scansuite codeql $ENG $LANG
+  allow_failure: true
+bandit:
+  stage: sast
+  script:
+    - scansuite $LANG $ENG
+  allow_failure: true
+trivy:
+  stage: sca
+  script:
+    - scansuite dep_trivy $ENG
+  allow_failure: true
+iacs_kics:
+  stage: infra_test
+  script:
+    - scansuite iacs_kics $ENG
+  allow_failure: true
+image_vulns_trivy:
+  stage: infra_test
+  script:
+    - scansuite image_trivy $ENG $DOCKER_IMAGE
+  allow_failure: true
+dastardly:
+  stage: dynamic
+  script:
+    - scansuite dastardly $ENG $WEBSITE
+  allow_failure: true
+arachni:
+  stage: dynamic
+  script:
+    - scansuite arachni $ENG $WEBSITE $COOKIES
+  allow_failure: true
+production:
+  stage: prod
+  script:
+    - id
