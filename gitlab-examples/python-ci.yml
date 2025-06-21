@@ -1,4 +1,4 @@
-image: 'appsec4u/cicd:keyid'
+image: 'appsec4u/cicd'
 variables:
   ENG: 2
   DOCKER_IMAGE: 'codeclimate/codeclimate-coffeelint'
