@@ -1,4 +1,4 @@
-image: 'appsec4u/worker:keyid'
+image: 'appsec4u/cicd:keyid'
 variables:
   ENG: 9
   DOCKER_IMAGE: 'nginx:latest'
