@@ -50,6 +50,8 @@ sast_python:
   script:
     - scansuite $LANG $ENG
   allow_failure: true
+
+# SCA/OAST Section
 dep_checks:
   stage: sca
   script:
@@ -87,7 +89,7 @@ deep_dast_scan:
 nuclei:
   stage: dynamic
   script:
-    - scansuite nuclei_local $ENG $WEBSITE $COOKIES
+    - scansuite nuclei $ENG $WEBSITE $COOKIES
   allow_failure: true
 
 # End of scans

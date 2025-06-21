@@ -20,6 +20,8 @@ build:
   stage: build
   script:
     - echo "Building"
+
+# SAST Section
 secrets:
   stage: build
   script:
@@ -40,11 +42,16 @@ sast_java:
   script:
     - scansuite $LANG $ENG
   allow_failure: true
+
+
+# SCA/OAST Section
 dep_checks:
   stage: sca
   script:
     - scansuite dep_checks $ENG
   allow_failure: true
+
+# Configs and docker image checks
 iacs_kics:
   stage: infra_test
   script:
@@ -55,6 +62,8 @@ image_vulns:
   script:
     - scansuite docker_image_scan $ENG $DOCKER_IMAGE
   allow_failure: true
+
+# DAST Section
 dast:
   stage: dynamic
   script:
@@ -63,8 +72,10 @@ dast:
 nuclei:
   stage: dynamic
   script:
-    - scansuite nuclei_local $ENG $WEBSITE $COOKIES
+    - scansuite nuclei $ENG $WEBSITE $COOKIES
   allow_failure: true
+
+# End of scans
 production:
   stage: prod
   script:
