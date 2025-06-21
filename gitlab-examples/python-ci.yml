@@ -1,9 +1,11 @@
 image: 'appsec4u/worker:keyid'
 variables:
-  ENG: 10
+  ENG: 2
   DOCKER_IMAGE: 'codeclimate/codeclimate-coffeelint'
   WEBSITE: 'https://ginandjuice.shop'
   COOKIES: none
+  #COOKIES: 'session=mMtEIWn...; csrf_token=k0LKSOs...'
+  #COOKIES: "Authorization: Bearer eyJhbGciOiJSUzI1N..."
   LANG: python
 
 stages:
@@ -26,61 +28,69 @@ build:
    - source env/bin/activate              # Activate the virtual environment
    - pip install -r requirements.txt      # Install the required third party packages as defined in requirements.txt
    - python manage.py check               # Run checks to ensure the application is working fine
-secrets_gitleaks:
+
+# SAST Section
+secrets:
   stage: build
   script:
-    - scansuite gitleaks $ENG
+    - scansuite secrets $ENG
   allow_failure: true
-secrets_trufflehog:
-  stage: build
-  script:
-    - scansuite trufflehog $ENG
-  allow_failure: true
-semgrep:
+sast_quick:
   stage: sast
   script:
-    - scansuite semgrep_local $ENG
+    - scansuite sast_quick $ENG
   allow_failure: true
-gitlab:
+sast_full:
   stage: sast
   script:
-    - scansuite semgrep_gitlab $ENG
+    - scansuite sast_full $ENG
   allow_failure: true
-codeql:
-  stage: sast
-  script:
-    - scansuite codeql $ENG $LANG
-  allow_failure: true
-bandit:
+sast_python:
   stage: sast
   script:
     - scansuite $LANG $ENG
   allow_failure: true
-trivy:
+dep_checks:
   stage: sca
   script:
-    - scansuite dep_trivy $ENG
+    - scansuite dep_checks $ENG
   allow_failure: true
+
+# Configs and docker image checks
 iacs_kics:
   stage: infra_test
   script:
     - scansuite iacs_kics $ENG
   allow_failure: true
-image_vulns_trivy:
+image_vulns:
   stage: infra_test
   script:
-    - scansuite image_trivy $ENG $DOCKER_IMAGE
+    - scansuite docker_image_scan $ENG $DOCKER_IMAGE
   allow_failure: true
-dastardly:
+
+# DAST Section
+dast_quick:
   stage: dynamic
   script:
-    - scansuite dastardly $ENG $WEBSITE
+    - scansuite dast_quick $ENG $WEBSITE $COOKIES
   allow_failure: true
-arachni:
+dast_balanced:
   stage: dynamic
   script:
-    - scansuite arachni $ENG $WEBSITE $COOKIES
+    - scansuite dast_balanced $ENG $WEBSITE $COOKIES
   allow_failure: true
+deep_dast_scan:
+  stage: dynamic
+  script:
+    - scansuite zap_full $ENG $WEBSITE $COOKIES
+  allow_failure: true
+nuclei:
+  stage: dynamic
+  script:
+    - scansuite nuclei_local $ENG $WEBSITE $COOKIES
+  allow_failure: true
+
+# End of scans
 production:
   stage: prod
   script:

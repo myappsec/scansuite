@@ -20,55 +20,45 @@ build:
   stage: build
   script:
     - echo "Building"
-secrets_gitleaks:
+secrets:
   stage: build
   script:
-    - scansuite gitleaks $ENG
+    - scansuite secrets $ENG
   allow_failure: true
-secrets_trufflehog:
-  stage: build
-  script:
-    - scansuite trufflehog $ENG
-  allow_failure: true
-semgrep:
+sast_quick:
   stage: sast
   script:
-    - scansuite semgrep_local $ENG
+    - scansuite sast_quick $ENG
   allow_failure: true
-gitlab:
+sast_full:
   stage: sast
   script:
-    - scansuite semgrep_gitlab $ENG
+    - scansuite sast_full $ENG
   allow_failure: true
-codeql:
-  stage: sast
-  script:
-    - scansuite codeql $ENG $LANG
-  allow_failure: true
-findsecbugs:
+sast_java:
   stage: sast
   script:
     - scansuite $LANG $ENG
   allow_failure: true
-trivy:
+dep_checks:
   stage: sca
   script:
-    - scansuite dep_trivy $ENG
+    - scansuite dep_checks $ENG
   allow_failure: true
 iacs_kics:
   stage: infra_test
   script:
     - scansuite iacs_kics $ENG
   allow_failure: true
-image_vulns_trivy:
+image_vulns:
   stage: infra_test
   script:
-    - scansuite image_trivy $ENG $DOCKER_IMAGE
+    - scansuite docker_image_scan $ENG $DOCKER_IMAGE
   allow_failure: true
-zap:
+dast:
   stage: dynamic
   script:
-    - scansuite zap_base $ENG $WEBSITE $COOKIES
+    - scansuite dast_quick $ENG $WEBSITE $COOKIES
   allow_failure: true
 nuclei:
   stage: dynamic
