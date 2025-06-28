@@ -12,8 +12,10 @@ services:
      - "80:80"
     links:
      - web
+     - ai_docs
     depends_on:
      - web
+     - ai_docs
 
   web:
     image: appsec4u/web:TAG
@@ -94,6 +96,15 @@ services:
     # ports:
     #   - "8080:8080"
     #   - "9333:9333"
+
+  ai_docs:
+    image: appsec4u/ai_docs
+    command: bundle exec jekyll s --host=0.0.0.0
+    volumes:
+      - ./services/ai_docs:/website
+      - /var/tmp/scansuite/ai_docs:/website/docs
+    env_file:
+      - .env
 
 volumes:
   postgres_data:
