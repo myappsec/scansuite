@@ -17,7 +17,7 @@ title: ScanSuite AI Documentation
 email: info@sec-sol.ru
 description: >- # this means to ignore newlines until "baseurl:"
   ScanSuite AI generated documentation for code repositories
-baseurl: "/docs" # the subpath of your site, e.g. /blog
+baseurl: "/aidocs" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: scansuite
 github_username:  scansuite

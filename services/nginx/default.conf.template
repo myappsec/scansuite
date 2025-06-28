@@ -9,16 +9,16 @@ server {
     server_tokens off;
     server_name web;
 
-    # Proxy /docs without rewriting or stripping
-    location /docs/ {
+    # Proxy /aidocs without rewriting or stripping
+    location /aidocs/ {
         proxy_pass http://ai_docs:4000;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
 
-    location = /docs {
-        return 301 /docs/;
+    location = /aidocs {
+        return 301 /aidocs/;
     }
 
     # Everything else to web:5000
