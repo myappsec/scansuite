@@ -1,12 +1,17 @@
-image: 'appsec4u/cicd'
+image: 'appsec4u/worker:YOUR_ID_HERE'
 variables:
+  # Specify the engagement ID for the scansuite scans:
   ENG: 2
-  DOCKER_IMAGE: 'codeclimate/codeclimate-coffeelint'
-  WEBSITE: 'https://ginandjuice.shop'
-  COOKIES: none
-  #COOKIES: 'session=mMtEIWn...; csrf_token=k0LKSOs...'
-  #COOKIES: "Authorization: Bearer eyJhbGciOiJSUzI1N..."
+  # Set export_dojo to 'True' to enable exporting results to DefectDojo, or 'False' to disable it:
+  EXPORT_DOJO: 'True'
+  # Specify the programming language for the SAST scans
   LANG: python
+  # Specify the docker image to be scanned in the infra_test stage:
+  DOCKER_IMAGE: 'codeclimate/codeclimate-coffeelint'
+  # Specify the target website for DAST scans:
+  WEBSITE: 'https://ginandjuice.shop'
+  HEADERS: 'null'
+  COOKIES: 'null'
 
 stages:
   - build
@@ -33,63 +38,63 @@ build:
 secrets:
   stage: build
   script:
-    - scansuite secrets $ENG
+    - scansuite_sast secrets $ENG $EXPORT_DOJO
   allow_failure: true
 sast_quick:
   stage: sast
   script:
-    - scansuite sast_quick $ENG
+    - scansuite_sast sast_quick $ENG $EXPORT_DOJO
   allow_failure: true
 sast_full:
   stage: sast
   script:
-    - scansuite sast_full $ENG
+    - scansuite_sast sast_full $ENG $EXPORT_DOJO
   allow_failure: true
 sast_python:
   stage: sast
   script:
-    - scansuite $LANG $ENG
+    - scansuite_sast $LANG $ENG $EXPORT_DOJO
   allow_failure: true
 
 # SCA/OAST Section
 dep_checks:
   stage: sca
   script:
-    - scansuite dep_checks $ENG
+    - scansuite_sast dep_checks $ENG $EXPORT_DOJO
   allow_failure: true
 
 # Configs and docker image checks
 iacs_kics:
   stage: infra_test
   script:
-    - scansuite iacs_kics $ENG
+    - scansuite_sast iacs_kics $ENG $EXPORT_DOJO
   allow_failure: true
 image_vulns:
   stage: infra_test
   script:
-    - scansuite docker_image_scan $ENG $DOCKER_IMAGE
+    - scansuite_infra docker_image_scan $ENG $DOCKER_IMAGE
   allow_failure: true
 
 # DAST Section
 dast_quick:
   stage: dynamic
   script:
-    - scansuite dast_quick $ENG $WEBSITE $COOKIES
+    - scansuite_dast dast_quick $ENG $WEBSITE $HEADERS $COOKIES
   allow_failure: true
 dast_balanced:
   stage: dynamic
   script:
-    - scansuite dast_balanced $ENG $WEBSITE $COOKIES
+    - scansuite_dast dast_balanced $ENG $WEBSITE $HEADERS $COOKIES
   allow_failure: true
 deep_dast_scan:
   stage: dynamic
   script:
-    - scansuite zap_full $ENG $WEBSITE $COOKIES
+    - scansuite_dast zap_full $ENG $WEBSITE $HEADERS $COOKIES
   allow_failure: true
 nuclei:
   stage: dynamic
   script:
-    - scansuite nuclei $ENG $WEBSITE $COOKIES
+    - scansuite_dast nuclei $ENG $WEBSITE $HEADERS $COOKIES
   allow_failure: true
 
 # End of scans
