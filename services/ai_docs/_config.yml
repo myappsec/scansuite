@@ -31,6 +31,7 @@ mermaid:
   # Version of mermaid library
   # Pick an available version from https://cdn.jsdelivr.net/npm/mermaid/
   version: "9.1.3"
+  #src: '/js/mermaid.min.js'
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
