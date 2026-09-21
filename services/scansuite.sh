@@ -10,8 +10,9 @@
 set -uo pipefail
 
 REPO="https://github.com/myappsec/scansuite"
-APP_PARENT="$HOME/$(dirname "apps/scansuite")"
-APP_DIR="$HOME/apps/scansuite"
+# An absolute path, or one relative to the home directory (the product decides).
+APP_DIR="apps/scansuite"
+case "$APP_DIR" in /*) ;; *) APP_DIR="$HOME/$APP_DIR" ;; esac
 
 if ! ls ./*.lic >/dev/null 2>&1; then
     echo "No licence file (*.lic) in this folder. Copy the one sent with your"
@@ -28,7 +29,21 @@ for file in ./*.lic; do
     fi
     lic_path=$(realpath "$file")
 
-    mkdir -p "$APP_PARENT"
+    # Under /opt only root can write. Create the directory once and hand it to
+    # whoever runs the installation, so every later command works without sudo.
+    if [ ! -d "$APP_DIR" ]; then
+        if ! mkdir -p "$APP_DIR" 2>/dev/null; then
+            echo "[*] Creating $APP_DIR (needs sudo)"
+            sudo mkdir -p "$APP_DIR" && sudo chown "$(id -u):$(id -g)" "$APP_DIR" || {
+                echo "Could not create $APP_DIR."
+                exit 1
+            }
+        fi
+    fi
+    if [ ! -w "$APP_DIR" ]; then
+        echo "$APP_DIR is not writable by $(id -un). Run this as the account that owns it."
+        exit 1
+    fi
     if [ -d "$APP_DIR/.git" ]; then
         echo "[*] Updating the existing installation in $APP_DIR"
         git -C "$APP_DIR" pull --ff-only || {
@@ -51,7 +66,7 @@ for file in ./*.lic; do
         echo "  ./scansuite status          what is running"
         echo "  ./scansuite logs web        recent log lines"
         echo "  ./scansuite doctor          check the host and the installation"
-        echo "  git pull && ./scansuite update    fetch and apply a new release"
+        echo "  ./scansuite update          fetch and apply a new release"
         echo ""
         exit 0
     fi
