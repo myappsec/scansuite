@@ -47,7 +47,7 @@ only the services that changed. Your `.env` and `key/` are never touched.
 | Path | |
 |---|---|
 | `.env` | settings and secrets, generated on the first install — keep it |
-| `key/` | your licence file |
+| `key/` | your licence file, and `scansuite-secrets.env`: the keys that decrypt the credentials stored in the database. It is made on the first start; back it up with the database, which is unreadable in part without it |
 | `docker-compose.yml` | the services. Never edited by hand: the release is `SCANSUITE_TAG` in `.env` |
 | `services/nginx/certs/` | the TLS certificate nginx serves — replace with your own |
 | `scanners.d/` | the scanner images this release pulls |
