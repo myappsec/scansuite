@@ -1,8 +1,8 @@
 d33dbbf2ed0a4518f593ff8e235abbe303b1a3ddf0080391ac5efcfd23618549 *./.env.example
 b896b3d03647293c3b48ff75aca5aaea647f50d56c575a31d3c6c94c0ba791a9 *./.gitattributes
 a78ebfa333a24fe52ebf50ff82ea01940e8524d465b7a60de3b5867c7cd7ac73 *./.gitignore
-c29e0efa9fe7bb8c608ff977a0ba46e450d098ddb154e4c849ecccb4aa813cd2 *./README.md
-e7b9026878a8161b2fbe3a3c134187f80c8afee990706e8a5ca6efe430fb56a9 *./RELEASE
+275392564b33f1f703d813c214fba1fff272a5ac061d36f9f113113589321850 *./README.md
+23bd825525a7b58de879ac7753edcb79838fb1c722d9a20e4d86f65c90329e09 *./RELEASE
 ce7cf1ec09a5f21c3519ff10fc2b9e94fb1fb4e37f0db89bffd52a58cb3438e3 *./defectdojo/certs/nginx.crt
 90a96d65b9f49063edafcf6edb586c8c4092d92d0cf7952f02d245f1ba0e4739 *./defectdojo/certs/nginx.key
 ff577e8f8c3c4001bb1ee90c69aad6a6e3662968d56dc967884908d02c8ca3ed *./defectdojo/docker-compose.yml
@@ -15,7 +15,7 @@ bac4d47e684e54898ad47de2b415c669b9b91b2b3d46e524fc0b467ba3740496 *./scanners.d/d
 5767422d7d80f8c8275e348c00192762eb2ba33acefc3dc63f2cc38051d6a094 *./scanners.d/dynamic.list
 ef31fba1c6b4176a4b36539ca1184414cfb95721f5a0141a824f60659e813513 *./scanners.d/infra.list
 8b0f95e9963ee1038315333a6f68f8e955ea3c9c500a811b0a10e1dbb81b5ce4 *./scanners.d/static.list
-c5d4780996694c7d556dc0c0b03e48e5f90fe8e32cd04f16901eb3cb2cbce8ac *./scansuite
+1e8ef357bb843e9dbf3a9eba5d5ed2aa3e2c7e52932c6e1315cff06f015db49b *./scansuite
 28b4cdf9efdd13d84e0f255c17ff935b78fd28c124632f6be719b47b0a9eac93 *./services/ai_docs/.gitignore
 6e4c2c947e9d48243abc4207c99606f41c9531a106c0db4b06bce12f9cca77c6 *./services/ai_docs/404.html
 6a8d1eb21fc2820ab5256cb2f9df0effadb75f8408fc2108c01822f9334f20d7 *./services/ai_docs/Gemfile

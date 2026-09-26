@@ -14,6 +14,23 @@ cp <name>_<code>.lic key/
 ./scansuite install <code>
 ```
 
+### Choosing what is installed
+
+By default every external scanner container and DefectDojo are downloaded.
+`install` and `update` take these options, and remember them in `.env`, so a
+later `update` or `start` keeps to the same choice until you give another:
+
+```bash
+./scansuite install <code> --no-scanners    # no external scanner containers
+./scansuite install <code> --static-only    # only the static (code) scanners
+./scansuite install <code> --dynamic-only   # only the dynamic and infrastructure scanners
+./scansuite install <code> --no-dojo        # without DefectDojo
+./scansuite update --all-scanners --with-dojo  # everything again
+```
+
+The options combine, e.g. `--static-only --no-dojo`. `--scanners=all|static|dynamic|none`
+is the same choice in one word. Turning DefectDojo off stops it and keeps its data.
+
 ### Managing the installation
 
 ```bash
