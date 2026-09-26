@@ -66,6 +66,7 @@ only the services that changed. Your `.env` and `key/` are never touched.
 | `.env` | settings and secrets, generated on the first install — keep it |
 | `key/` | your licence file, and `scansuite-secrets.env`: the keys that decrypt the credentials stored in the database. It is made on the first start; back it up with the database, which is unreadable in part without it |
 | `docker-compose.yml` | the services. Never edited by hand: the release is `SCANSUITE_TAG` in `.env` |
+| `docker-compose.local.yml` | optional, yours: what this host changes, e.g. `web: ports: ["127.0.0.1:5000:5000"]` behind its own reverse proxy. Updates never touch it and every start includes it |
 | `services/nginx/certs/` | the TLS certificate nginx serves — replace with your own |
 | `scanners.d/` | the scanner images this release pulls |
 | `RELEASE` | which release this is, and what it was built from |
