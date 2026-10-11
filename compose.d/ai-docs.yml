@@ -1,0 +1,30 @@
+# The AI code documentation site: Jekyll serving the documentation the worker
+# generates into /var/tmp/scansuite/ai_docs, behind nginx at /aidocs.
+#
+# Enabled by FEATURE_AI_DOCS in the product manifest; the installer adds this
+# file to COMPOSE_FILE in .env.  A product without it ships neither this file
+# nor services/ai_docs/, and its nginx has no /aidocs location.
+
+services:
+
+  nginx:
+    links:
+      - ai_docs
+    depends_on:
+      - ai_docs
+
+  ai_docs:
+    image: appsec4u/ai_docs
+    # The same cap as the services in docker-compose.yml (anchors do not
+    # reach across compose files).
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "3"
+    command: bundle exec jekyll s --host=0.0.0.0
+    volumes:
+      - ./services/ai_docs:/website
+      - /var/tmp/scansuite/ai_docs:/website/docs
+    env_file:
+      - .env

@@ -1,0 +1,3 @@
+# The AI code documentation site, pulled with the platform images.  Shipped
+# only when the product manifest sets FEATURE_AI_DOCS=1 (compose.d/ai-docs.yml).
+appsec4u/ai_docs
