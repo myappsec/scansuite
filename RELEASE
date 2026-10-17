@@ -1,6 +1,6 @@
 product=ScanSuite
 release=4.7
-commit=bb05a2bb
-built=2026-10-11T11:11:24Z
-images=appsec4u/web, appsec4u/worker
+commit=8767fb26
+built=2026-10-17T19:36:47Z
+images=appsec4u/web, appsec4u/worker, appsec4u/worker-poc
 tag_format=<licence code>
